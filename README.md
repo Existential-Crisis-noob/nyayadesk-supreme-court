@@ -19,20 +19,20 @@ The current interface uses a small, curated sample corpus. It does not claim pro
 
 ## Run locally
 
-The application is a static site in `dist/`.
+The application is a static site with its editable source at the repository root.
 
 ```bash
-python3 -m http.server 4173 --directory dist
+python3 -m http.server 4173
 ```
 
 Then open [http://localhost:4173](http://localhost:4173).
 
 ## Structure
 
-- `dist/index.html` — application shell and views
-- `dist/styles.css` — responsive visual system
-- `dist/app.js` — sample corpus and interface behaviour
+- `index.html` — application shell and views
+- `styles.css` — responsive visual system
+- `app.js` — sample corpus and interface behaviour
 
 ## Deployment
 
-The production site is hosted on Vercel. Configure the Vercel project to use `dist` as the output directory.
+The production site is hosted on Vercel and deploys directly from the repository root.
