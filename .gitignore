@@ -2,3 +2,4 @@
 .openai/
 .vercel/
 dist/
+.env*
