@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d1d1a" />
+    <meta name="description" content="Evidence-first Supreme Court of India legal research." />
+    <title>NyayaDesk — Supreme Court Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#research" data-route="research" aria-label="NyayaDesk home">
+          <span class="brand-mark">न</span>
+          <span><strong>NyayaDesk</strong><small>Supreme Court</small></span>
+        </a>
+
+        <button class="new-research" id="newResearch" type="button">
+          <svg aria-hidden="true"><use href="#i-plus" /></svg>
+          New research
+        </button>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="research" type="button"><svg><use href="#i-spark" /></svg><span>Research</span><kbd>⌘ K</kbd></button>
+          <button class="nav-item" data-view="cases" type="button"><svg><use href="#i-search" /></svg><span>Case search</span></button>
+          <button class="nav-item" data-view="analytics" type="button"><svg><use href="#i-chart" /></svg><span>Judge lens</span></button>
+          <button class="nav-item" data-view="matters" type="button"><svg><use href="#i-folder" /></svg><span>Matters</span><b id="savedCount">2</b></button>
+          <button class="nav-item" data-view="alerts" type="button"><svg><use href="#i-bell" /></svg><span>Alerts</span><b>3</b></button>
+        </nav>
+
+        <div class="sidebar-section">
+          <div class="eyebrow">RECENT RESEARCH</div>
+          <button class="recent-item" data-prompt="Is privacy a fundamental right in India?" type="button"><span>Privacy as a fundamental right</span><small>3 authorities</small></button>
+          <button class="recent-item" data-prompt="What is the basic structure doctrine?" type="button"><span>Basic structure doctrine</span><small>2 authorities</small></button>
+          <button class="recent-item" data-prompt="What safeguards apply to internet shutdowns?" type="button"><span>Internet shutdown safeguards</span><small>2 authorities</small></button>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="corpus-chip" data-view="data" type="button">
+            <span class="pulse"></span>
+            <span><strong>Supreme Court corpus</strong><small>Sample index · 9 verified cases</small></span>
+            <svg><use href="#i-chevron" /></svg>
+          </button>
+          <button class="profile" type="button"><span>AR</span><span><strong>Aashish Rana Bhat</strong><small>Founding workspace</small></span><svg><use href="#i-more" /></svg></button>
+        </div>
+      </aside>
+
+      <div class="mobile-topbar">
+        <button id="mobileMenu" type="button" aria-label="Open menu"><svg><use href="#i-menu" /></svg></button>
+        <a class="mobile-brand" href="#research"><span class="brand-mark">न</span><strong>NyayaDesk</strong></a>
+        <button class="avatar-mini" type="button">AR</button>
+      </div>
+
+      <main class="main" id="mainContent">
+        <section class="view active" id="view-research" aria-labelledby="researchTitle">
+          <header class="view-header research-header">
+            <div>
+              <div class="scope-line"><span class="status-dot"></span>SUPREME COURT OF INDIA · VERIFIED RESEARCH</div>
+              <h1 id="researchTitle">Build an answer you can defend.</h1>
+              <p>Ask a legal question. NyayaDesk separates the answer from the evidence and shows what still needs human checking.</p>
+            </div>
+            <button class="outline-button" id="methodButton" type="button"><svg><use href="#i-shield" /></svg>Verification method</button>
+          </header>
+
+          <div class="research-grid">
+            <div class="research-column">
+              <form class="composer" id="researchForm">
+                <label for="researchInput">Research question</label>
+                <textarea id="researchInput" rows="3" placeholder="Ask about a legal proposition, doctrine or line of authority…">Is privacy a fundamental right in India?</textarea>
+                <div class="composer-actions">
+                  <div class="scope-select"><svg><use href="#i-building" /></svg><span>Supreme Court only</span><svg><use href="#i-chevron-down" /></svg></div>
+                  <button class="attach-button" id="attachButton" type="button" title="Upload a brief"><svg><use href="#i-paperclip" /></svg></button>
+                  <input id="fileInput" type="file" hidden accept=".pdf,.doc,.docx,.txt" />
+                  <button class="ask-button" type="submit"><span>Research</span><svg><use href="#i-arrow" /></svg></button>
+                </div>
+              </form>
+
+              <div class="suggestion-row" aria-label="Suggested questions">
+                <button type="button" data-prompt="What is the basic structure doctrine?">Basic structure doctrine</button>
+                <button type="button" data-prompt="What safeguards apply to internet shutdowns?">Internet shutdowns</button>
+                <button type="button" data-prompt="Explain constitutional morality in Navtej Singh Johar.">Constitutional morality</button>
+              </div>
+
+              <article class="answer-card" id="answerCard">
+                <div class="answer-topline">
+                  <div><span class="answer-label">RESEARCH MEMO</span><span id="answerTime">Prepared from 3 authorities</span></div>
+                  <div class="verification-score"><svg><use href="#i-shield-check" /></svg><span><strong id="claimScore">5/5</strong> claims sourced</span></div>
+                </div>
+                <h2 id="answerTitle">Privacy is a constitutionally protected fundamental right</h2>
+                <p class="short-answer" id="answerShort"><strong>Short answer.</strong> A nine-judge bench unanimously recognised privacy as a fundamental right protected by the Constitution. Its protection arises primarily from life and personal liberty, while also drawing support from the freedoms and guarantees in Part III.</p>
+                <div class="answer-section">
+                  <h3>Reasoning</h3>
+                  <div id="answerReasoning"></div>
+                </div>
+                <div class="answer-section">
+                  <h3>Practical research path</h3>
+                  <ol class="research-path" id="answerSteps"></ol>
+                </div>
+                <div class="answer-caution" id="answerCaution"><svg><use href="#i-alert" /></svg><span><strong>Scope note</strong>This answers the constitutional status of privacy. A specific privacy restriction still requires analysis of legality, legitimate aim, proportionality and procedural safeguards.</span></div>
+                <footer class="answer-footer">
+                  <span>Not legal advice · Verify against the official judgment before filing.</span>
+                  <div>
+                    <button class="icon-text" id="copyAnswer" type="button"><svg><use href="#i-copy" /></svg>Copy</button>
+                    <button class="icon-text" id="exportAnswer" type="button"><svg><use href="#i-download" /></svg>Export</button>
+                    <button class="primary-small" id="saveResearch" type="button"><svg><use href="#i-bookmark" /></svg>Save to matter</button>
+                  </div>
+                </footer>
+              </article>
+            </div>
+
+            <aside class="evidence-panel" aria-label="Evidence">
+              <div class="panel-header">
+                <div><span class="panel-kicker">EVIDENCE</span><h2>Authority trail</h2></div>
+                <span class="source-count" id="sourceCount">3 sources</span>
+              </div>
+              <div class="evidence-progress"><span><i id="evidenceProgress" style="width:100%"></i></span><small><strong id="evidencePercent">100%</strong> of answer claims linked to an authority</small></div>
+              <div id="evidenceList" class="evidence-list"></div>
+              <div class="evidence-policy">
+                <svg><use href="#i-lock" /></svg>
+                <div><strong>Unsupported claims are blocked</strong><p>If retrieval does not produce supporting authority, the answer says “not verified” instead of completing from memory.</p></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-cases" aria-labelledby="casesTitle">
+          <header class="view-header compact-header">
+            <div><div class="scope-line">SUPREME COURT CASE SEARCH</div><h1 id="casesTitle">Find the judgment, then test the proposition.</h1></div>
+            <button class="outline-button" id="savedSearchButton" type="button"><svg><use href="#i-bell" /></svg>Create alert</button>
+          </header>
+          <div class="search-toolbar">
+            <div class="search-box"><svg><use href="#i-search" /></svg><input id="caseSearch" type="search" placeholder="Case name, citation, judge, article or legal issue" /><kbd>⌘ K</kbd></div>
+            <button class="filter-button active" data-filter="all" type="button">All cases</button>
+            <button class="filter-button" data-filter="Constitutional law" type="button">Constitutional</button>
+            <button class="filter-button" data-filter="Civil liberties" type="button">Civil liberties</button>
+            <button class="filter-button" data-filter="Technology" type="button">Technology</button>
+          </div>
+          <div class="case-layout">
+            <aside class="filter-rail">
+              <div class="filter-title"><strong>Filters</strong><button id="clearFilters" type="button">Clear</button></div>
+              <label>Decision year<select id="yearFilter"><option value="all">All years</option><option>1973</option><option>1978</option><option>1997</option><option>2017</option><option>2018</option><option>2020</option><option>2023</option></select></label>
+              <label>Bench strength<select id="benchFilter"><option value="all">Any bench</option><option value="9">9+ judges</option><option value="5">5+ judges</option><option value="3">3+ judges</option></select></label>
+              <fieldset><legend>Record quality</legend><label><input type="checkbox" checked disabled /> Metadata verified</label><label><input type="checkbox" id="headnoteOnly" /> Headnote available</label></fieldset>
+              <div class="filter-note"><svg><use href="#i-database" /></svg><p><strong>Prototype corpus</strong>Searches 9 verified landmark records. Production ingestion is designed for the full public dataset.</p></div>
+            </aside>
+            <div class="results-column">
+              <div class="results-summary"><span><strong id="resultCount">9</strong> results in the verification corpus</span><label>Sort <select id="sortCases"><option value="relevance">Relevance</option><option value="newest">Newest</option><option value="oldest">Oldest</option></select></label></div>
+              <div class="case-results" id="caseResults"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-reader" aria-labelledby="readerTitle">
+          <header class="reader-header">
+            <button class="back-button" data-view="cases" type="button"><svg><use href="#i-back" /></svg>Back to results</button>
+            <div class="reader-actions"><button class="outline-button" id="readerSave" type="button"><svg><use href="#i-bookmark" /></svg>Save</button><button class="outline-button" id="readerExport" type="button"><svg><use href="#i-download" /></svg>Export note</button></div>
+          </header>
+          <div class="reader-title-block">
+            <div class="case-badges"><span>SUPREME COURT OF INDIA</span><span id="readerCitation">(2017) 10 SCC 1</span></div>
+            <h1 id="readerTitle">Justice K.S. Puttaswamy (Retd.) v. Union of India</h1>
+            <div class="reader-meta" id="readerMeta"></div>
+          </div>
+          <div class="reader-grid">
+            <aside class="judgment-map">
+              <span class="panel-kicker">JUDGMENT MAP</span>
+              <button class="active" data-reader-tab="headnote" type="button"><span>01</span>Verified headnote</button>
+              <button data-reader-tab="facts" type="button"><span>02</span>Background</button>
+              <button data-reader-tab="issues" type="button"><span>03</span>Issues</button>
+              <button data-reader-tab="holding" type="button"><span>04</span>Holding</button>
+              <button data-reader-tab="citations" type="button"><span>05</span>Authorities</button>
+              <button data-reader-tab="source" type="button"><span>06</span>Source record</button>
+            </aside>
+            <article class="judgment-document">
+              <div class="document-toolbar"><div class="doc-tabs"><button class="active" data-doc-view="headnote" type="button">Headnote</button><button data-doc-view="full" type="button">Original judgment</button></div><button class="find-paragraph" type="button"><svg><use href="#i-search" /></svg>Find in judgment</button></div>
+              <div class="machine-banner"><svg><use href="#i-shield-check" /></svg><span><strong>Editor-reviewed sample.</strong> Each statement is limited to the verified case record. Production headnotes require pinpoint links before publication.</span></div>
+              <div id="readerContent"></div>
+            </article>
+            <aside class="verification-rail">
+              <span class="panel-kicker">RECORD INTEGRITY</span>
+              <div class="integrity-score"><span><svg><use href="#i-shield-check" /></svg></span><div><strong>Verified sample</strong><small>Identity and citation checked</small></div></div>
+              <div class="check-list">
+                <div><svg><use href="#i-check" /></svg><span>Case identity</span><strong>Checked</strong></div>
+                <div><svg><use href="#i-check" /></svg><span>Decision date</span><strong>Checked</strong></div>
+                <div><svg><use href="#i-check" /></svg><span>Bench strength</span><strong>Checked</strong></div>
+                <div class="pending"><svg><use href="#i-clock" /></svg><span>Pinpoint map</span><strong>Pending</strong></div>
+                <div class="pending"><svg><use href="#i-clock" /></svg><span>Later treatment</span><strong>Pending</strong></div>
+              </div>
+              <div class="citation-state"><span class="panel-kicker">TREATMENT</span><h3>Not asserted yet</h3><p>NyayaDesk will not display “good law” until later citing decisions have been resolved and reviewed.</p></div>
+              <button class="wide-secondary" id="reportRecord" type="button"><svg><use href="#i-flag" /></svg>Report a record issue</button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-analytics" aria-labelledby="analyticsTitle">
+          <header class="view-header compact-header">
+            <div><div class="scope-line">JUDGE LENS · DESCRIPTIVE, NOT PREDICTIVE</div><h1 id="analyticsTitle">Understand the published record.</h1><p>Transparent counts and subject patterns. No win-rate scoring, no outcome prediction.</p></div>
+            <button class="outline-button" id="analyticsMethod" type="button"><svg><use href="#i-info" /></svg>Methodology</button>
+          </header>
+          <div class="analytics-banner"><svg><use href="#i-database" /></svg><span><strong>Sample denominator: 9 landmark judgments.</strong> The charts below are computed only from records included in this prototype—not the full Supreme Court corpus.</span></div>
+          <div class="analytics-controls"><label>Judge<select id="judgeSelect"></select></label><label>Period<select disabled><option>1973–2023 sample</option></select></label><button class="filter-button active" type="button">All subjects</button></div>
+          <div class="metrics-grid" id="metricCards"></div>
+          <div class="analytics-grid">
+            <article class="chart-card"><div class="card-heading"><div><span class="panel-kicker">SUBJECT MIX</span><h2>Cases in this sample</h2></div><span id="chartDenominator">n=9</span></div><div class="bar-chart" id="subjectChart"></div></article>
+            <article class="chart-card"><div class="card-heading"><div><span class="panel-kicker">BENCH STRENGTH</span><h2>Constitutional importance</h2></div><span>recorded benches</span></div><div class="donut-wrap"><div class="donut" id="benchDonut"><span><strong>9</strong><small>cases</small></span></div><div class="legend" id="benchLegend"></div></div></article>
+            <article class="chart-card full-span"><div class="card-heading"><div><span class="panel-kicker">PUBLISHED DECISIONS</span><h2>Sample timeline</h2></div><button class="text-button" data-view="cases" type="button">Open cases →</button></div><div class="timeline-chart" id="timelineChart"></div></article>
+          </div>
+          <div class="ethics-note"><svg><use href="#i-scale" /></svg><div><strong>What Judge Lens will not do</strong><p>It will not rank judges, infer personal ideology, predict outcomes or turn a party’s identity into a litigation score. It describes published decisions and always shows the denominator.</p></div></div>
+        </section>
+
+        <section class="view" id="view-matters" aria-labelledby="mattersTitle">
+          <header class="view-header compact-header"><div><div class="scope-line">WORKSPACE</div><h1 id="mattersTitle">Matters and saved authorities.</h1><p>Keep research questions, authorities and notes together.</p></div><button class="ask-button" id="newMatter" type="button"><svg><use href="#i-plus" /></svg>New matter</button></header>
+          <div class="matter-grid" id="matterGrid"></div>
+        </section>
+
+        <section class="view" id="view-alerts" aria-labelledby="alertsTitle">
+          <header class="view-header compact-header"><div><div class="scope-line">WATCHLISTS</div><h1 id="alertsTitle">Know when the law moves.</h1><p>Alerts are linked to queries, authorities or judges—never opaque recommendations.</p></div><button class="ask-button" id="newAlert" type="button"><svg><use href="#i-plus" /></svg>Create alert</button></header>
+          <div class="alert-list" id="alertList"></div>
+        </section>
+
+        <section class="view" id="view-data" aria-labelledby="dataTitle">
+          <header class="view-header compact-header"><div><div class="scope-line">DATA LEDGER</div><h1 id="dataTitle">Know exactly what is—and is not—in the corpus.</h1><p>Source provenance, validation gates and update status belong inside the product.</p></div><a class="outline-button link-button" href="https://github.com/vanga/indian-supreme-court-judgments" target="_blank" rel="noreferrer"><svg><use href="#i-external" /></svg>Dataset repository</a></header>
+          <div class="ledger-grid">
+            <article class="ledger-card hero-ledger"><span class="panel-kicker">PRODUCTION DATA SOURCE</span><h2>Indian Supreme Court Judgments open dataset</h2><p>The upstream project publishes approximately 35,000 judgments from 1950 onward, with PDFs and structured metadata in a public S3 bucket under CC BY 4.0.</p><div class="ledger-stats"><div><strong>~35K</strong><span>English judgments</span></div><div><strong>52.24 GB</strong><span>Published dataset size</span></div><div><strong>1950–present</strong><span>Stated coverage</span></div></div><a href="https://registry.opendata.aws/indian-supreme-court-judgments/" target="_blank" rel="noreferrer">Open AWS registry record <svg><use href="#i-external" /></svg></a></article>
+            <article class="ledger-card"><span class="panel-kicker">THIS PROTOTYPE</span><h2>9 verified sample records</h2><p>Only the records visible in search are loaded here. All corpus-scale statistics are intentionally disabled until the full ingestion and QA pipeline runs.</p><div class="quality-meter"><span><i style="width:100%"></i></span><div><strong>100%</strong><small>sample metadata reviewed</small></div></div></article>
+            <article class="ledger-card"><span class="panel-kicker">VALIDATION GATES</span><h2>Five checks before an answer ships</h2><ol class="gate-list"><li><span>1</span>Resolve case identity</li><li><span>2</span>Match the source PDF</li><li><span>3</span>Link proposition to text</li><li><span>4</span>Check later treatment</li><li><span>5</span>Expose confidence and gaps</li></ol></article>
+            <article class="ledger-card full-span"><span class="panel-kicker">INGESTION PLAN</span><h2>From public files to trustworthy research</h2><div class="pipeline"><div class="done"><span>01</span><strong>Acquire</strong><small>Parquet + PDF archive</small></div><i></i><div><span>02</span><strong>Normalize</strong><small>Names, dates, citations</small></div><i></i><div><span>03</span><strong>Structure</strong><small>Paragraphs + roles</small></div><i></i><div><span>04</span><strong>Resolve</strong><small>Citation graph</small></div><i></i><div><span>05</span><strong>Review</strong><small>Human QA queues</small></div><i></i><div><span>06</span><strong>Index</strong><small>Search + retrieval</small></div></div></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close"><svg><use href="#i-close" /></svg></button>
+        <div id="modalIcon" class="modal-icon"><svg><use href="#i-shield" /></svg></div>
+        <h2 id="modalTitle">Verification method</h2>
+        <div id="modalBody"></div>
+        <div class="modal-actions" id="modalActions"><button class="ask-button" id="modalOkay" type="button">Understood</button></div>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"><svg><use href="#i-check" /></svg><span>Saved</span></div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3ZM19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15Z" /></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6.5h6l2 2h10v10H3z"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.8 7.5 9.5 4.3-1.7 7.5-4.8 7.5-9.5V6z"/></symbol>
+      <symbol id="i-building" viewBox="0 0 24 24"><path d="M3 21h18M5 21V8h14v13M8 12h2m4 0h2m-8 4h2m4 0h2M3 8l9-5 9 5"/></symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m20 12-8 8a6 6 0 0 1-8-8l9-9a4 4 0 0 1 6 6l-9 9a2 2 0 0 1-3-3l8-8"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m5 12 14 0m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 7.8 7.5 9.5 4.3-1.7 7.5-4.8 7.5-9.5V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 9v4m0 3h.01"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16"/></symbol>
+      <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+      <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4m0 1h11l-2 4 2 4H5"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/></symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 6h14M7 6l-4 7h8L7 6Zm10 0-4 7h8l-4-7ZM7 21h10"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6m0-6-9 9M10 6H4v14h14v-6"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    </svg>
+    <script src="./app.js"></script>
+  </body>
+</html>
