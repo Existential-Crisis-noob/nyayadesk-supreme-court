@@ -73,6 +73,27 @@ function selectColumnSet(mode) {
   updateGroupCounts();
 }
 
+function applyLinkedConfiguration() {
+  const params = new URLSearchParams(window.location.search);
+  const linkedColumns = (params.get("columns") || "").split(",").map(value => value.trim()).filter(Boolean);
+  if (linkedColumns.length) {
+    const allowed = new Set(state.schema.all_columns);
+    const selected = new Set(linkedColumns.filter(column => allowed.has(column)));
+    $$('[data-column]').forEach(input => { input.checked = selected.has(input.value); });
+    updateGroupCounts();
+    if (selected.size) toast(`${selected.size} linked extractor columns selected`);
+  }
+  const linkedYears = params.get("years");
+  if (linkedYears) $("#years").value = linkedYears;
+  const linkedFormat = params.get("format");
+  const formatInput = linkedFormat ? $(`input[name="format"][value="${linkedFormat}"]`) : null;
+  if (formatInput && !formatInput.disabled) {
+    formatInput.checked = true;
+    $$(".format-card").forEach(card => card.classList.toggle("active", card.querySelector("input").checked));
+  }
+  updatePlan();
+}
+
 async function inspectYear() {
   const years = $("#years").value.trim();
   const first = years.match(/\d{4}/)?.[0];
@@ -232,6 +253,7 @@ async function initialize() {
     state.cloud = Boolean(schema.cloud?.enabled);
     renderSchema(schema);
     if (state.cloud) configureCloudMode(schema.cloud);
+    applyLinkedConfiguration();
   } catch (error) { toast(error.message); }
   $("#inspectYear").addEventListener("click", inspectYear);
   $("#runExtraction").addEventListener("click", startExtraction);
