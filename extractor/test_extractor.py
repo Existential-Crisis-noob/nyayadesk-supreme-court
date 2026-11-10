@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 import extractor
+from api.index import allowed_cors_origin
 from cloud_extract import prepare_cloud_config
 
 
@@ -67,6 +68,13 @@ class ExtractorUnitTests(unittest.TestCase):
             prepare_cloud_config({"years": "2023", "limit": 10, "format": "sqlite"})
         with self.assertRaises(ValueError):
             prepare_cloud_config({"years": "2023", "limit": 10, "format": "csv", "include_pdf_text": True})
+
+    def test_cors_is_limited_to_research_app_and_local_development(self):
+        production = "https://nyayadesk-supreme-court.vercel.app"
+        self.assertEqual(allowed_cors_origin(production), production)
+        self.assertEqual(allowed_cors_origin("http://127.0.0.1:4173"), "http://127.0.0.1:4173")
+        self.assertEqual(allowed_cors_origin("http://localhost:4173"), "http://localhost:4173")
+        self.assertEqual(allowed_cors_origin("https://example.com"), "")
 
 
 if __name__ == "__main__":
