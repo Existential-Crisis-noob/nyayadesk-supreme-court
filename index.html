@@ -42,7 +42,7 @@
         <div class="sidebar-footer">
           <button class="corpus-chip" data-view="data" type="button">
             <span class="pulse"></span>
-            <span><strong>Supreme Court corpus</strong><small>Sample index · 9 verified cases</small></span>
+            <span><strong>Supreme Court corpus</strong><small id="corpusStatus">Connecting extractor schema…</small></span>
             <svg><use href="#i-chevron" /></svg>
           </button>
           <button class="profile" type="button"><span>AR</span><span><strong>Aashish Rana Bhat</strong><small>Founding workspace</small></span><svg><use href="#i-more" /></svg></button>
@@ -145,10 +145,10 @@
               <label>Decision year<select id="yearFilter"><option value="all">All years</option><option>1973</option><option>1978</option><option>1997</option><option>2017</option><option>2018</option><option>2020</option><option>2023</option></select></label>
               <label>Bench strength<select id="benchFilter"><option value="all">Any bench</option><option value="9">9+ judges</option><option value="5">5+ judges</option><option value="3">3+ judges</option></select></label>
               <fieldset><legend>Record quality</legend><label><input type="checkbox" checked disabled /> Metadata verified</label><label><input type="checkbox" id="headnoteOnly" /> Headnote available</label></fieldset>
-              <div class="filter-note"><svg><use href="#i-database" /></svg><p><strong>Prototype corpus</strong>Searches 9 verified landmark records. Production ingestion is designed for the full public dataset.</p></div>
+              <div class="filter-note"><svg><use href="#i-database" /></svg><p><strong>Curated research set</strong>Searches nine reviewed landmark records while corpus-scale extraction remains available through the linked extractor.</p></div>
             </aside>
             <div class="results-column">
-              <div class="results-summary"><span><strong id="resultCount">9</strong> results in the verification corpus</span><label>Sort <select id="sortCases"><option value="relevance">Relevance</option><option value="newest">Newest</option><option value="oldest">Oldest</option></select></label></div>
+              <div class="results-summary"><span><strong id="resultCount">9</strong> results in the current research set</span><label>Sort <select id="sortCases"><option value="relevance">Relevance</option><option value="newest">Newest</option><option value="oldest">Oldest</option></select></label></div>
               <div class="case-results" id="caseResults"></div>
             </div>
           </div>
@@ -176,12 +176,12 @@
             </aside>
             <article class="judgment-document">
               <div class="document-toolbar"><div class="doc-tabs"><button class="active" data-doc-view="headnote" type="button">Headnote</button><button data-doc-view="full" type="button">Original judgment</button></div><button class="find-paragraph" type="button"><svg><use href="#i-search" /></svg>Find in judgment</button></div>
-              <div class="machine-banner"><svg><use href="#i-shield-check" /></svg><span><strong>Editor-reviewed sample.</strong> Each statement is limited to the verified case record. Production headnotes require pinpoint links before publication.</span></div>
+              <div class="machine-banner"><svg><use href="#i-shield-check" /></svg><span><strong>Editor-reviewed record.</strong> Each statement is limited to the verified case record. Headnotes require pinpoint links before publication.</span></div>
               <div id="readerContent"></div>
             </article>
             <aside class="verification-rail">
               <span class="panel-kicker">RECORD INTEGRITY</span>
-              <div class="integrity-score"><span><svg><use href="#i-shield-check" /></svg></span><div><strong>Verified sample</strong><small>Identity and citation checked</small></div></div>
+              <div class="integrity-score"><span><svg><use href="#i-shield-check" /></svg></span><div><strong>Verified record</strong><small>Identity and citation checked</small></div></div>
               <div class="check-list">
                 <div><svg><use href="#i-check" /></svg><span>Case identity</span><strong>Checked</strong></div>
                 <div><svg><use href="#i-check" /></svg><span>Decision date</span><strong>Checked</strong></div>
@@ -200,13 +200,13 @@
             <div><div class="scope-line">JUDGE LENS · DESCRIPTIVE, NOT PREDICTIVE</div><h1 id="analyticsTitle">Understand the published record.</h1><p>Transparent counts and subject patterns. No win-rate scoring, no outcome prediction.</p></div>
             <button class="outline-button" id="analyticsMethod" type="button"><svg><use href="#i-info" /></svg>Methodology</button>
           </header>
-          <div class="analytics-banner"><svg><use href="#i-database" /></svg><span><strong>Sample denominator: 9 landmark judgments.</strong> The charts below are computed only from records included in this prototype—not the full Supreme Court corpus.</span></div>
-          <div class="analytics-controls"><label>Judge<select id="judgeSelect"></select></label><label>Period<select disabled><option>1973–2023 sample</option></select></label><button class="filter-button active" type="button">All subjects</button></div>
+          <div class="analytics-banner"><svg><use href="#i-database" /></svg><span><strong>Current denominator: nine reviewed landmark judgments.</strong> The charts below describe only the visible research set; the extractor schema is linked separately.</span></div>
+          <div class="analytics-controls"><label>Judge<select id="judgeSelect"></select></label><label>Period<select disabled><option>1973–2023 reviewed set</option></select></label><button class="filter-button active" type="button">All subjects</button></div>
           <div class="metrics-grid" id="metricCards"></div>
           <div class="analytics-grid">
-            <article class="chart-card"><div class="card-heading"><div><span class="panel-kicker">SUBJECT MIX</span><h2>Cases in this sample</h2></div><span id="chartDenominator">n=9</span></div><div class="bar-chart" id="subjectChart"></div></article>
+            <article class="chart-card"><div class="card-heading"><div><span class="panel-kicker">SUBJECT MIX</span><h2>Cases in the current view</h2></div><span id="chartDenominator">n=9</span></div><div class="bar-chart" id="subjectChart"></div></article>
             <article class="chart-card"><div class="card-heading"><div><span class="panel-kicker">BENCH STRENGTH</span><h2>Constitutional importance</h2></div><span>recorded benches</span></div><div class="donut-wrap"><div class="donut" id="benchDonut"><span><strong>9</strong><small>cases</small></span></div><div class="legend" id="benchLegend"></div></div></article>
-            <article class="chart-card full-span"><div class="card-heading"><div><span class="panel-kicker">PUBLISHED DECISIONS</span><h2>Sample timeline</h2></div><button class="text-button" data-view="cases" type="button">Open cases →</button></div><div class="timeline-chart" id="timelineChart"></div></article>
+            <article class="chart-card full-span"><div class="card-heading"><div><span class="panel-kicker">PUBLISHED DECISIONS</span><h2>Decision timeline</h2></div><button class="text-button" data-view="cases" type="button">Open cases →</button></div><div class="timeline-chart" id="timelineChart"></div></article>
           </div>
           <div class="ethics-note"><svg><use href="#i-scale" /></svg><div><strong>What Judge Lens will not do</strong><p>It will not rank judges, infer personal ideology, predict outcomes or turn a party’s identity into a litigation score. It describes published decisions and always shows the denominator.</p></div></div>
         </section>
@@ -222,12 +222,13 @@
         </section>
 
         <section class="view" id="view-data" aria-labelledby="dataTitle">
-          <header class="view-header compact-header"><div><div class="scope-line">DATA LEDGER</div><h1 id="dataTitle">Know exactly what is—and is not—in the corpus.</h1><p>Source provenance, validation gates and update status belong inside the product.</p></div><a class="outline-button link-button" href="https://github.com/vanga/indian-supreme-court-judgments" target="_blank" rel="noreferrer"><svg><use href="#i-external" /></svg>Dataset repository</a></header>
+          <header class="view-header compact-header"><div><div class="scope-line">DATA LEDGER</div><h1 id="dataTitle">Know exactly what is—and is not—in the corpus.</h1><p>Source provenance, extractor fields and validation gates belong inside the product.</p></div><div class="header-actions"><a class="outline-button link-button" href="https://nyayadesk-supreme-court-extractor.vercel.app" target="_blank" rel="noreferrer"><svg><use href="#i-external" /></svg>Open extractor</a><a class="outline-button link-button" href="https://github.com/vanga/indian-supreme-court-judgments" target="_blank" rel="noreferrer"><svg><use href="#i-external" /></svg>Dataset repository</a></div></header>
           <div class="ledger-grid">
             <article class="ledger-card hero-ledger"><span class="panel-kicker">PRODUCTION DATA SOURCE</span><h2>Indian Supreme Court Judgments open dataset</h2><p>The upstream project publishes approximately 35,000 judgments from 1950 onward, with PDFs and structured metadata in a public S3 bucket under CC BY 4.0.</p><div class="ledger-stats"><div><strong>~35K</strong><span>English judgments</span></div><div><strong>52.24 GB</strong><span>Published dataset size</span></div><div><strong>1950–present</strong><span>Stated coverage</span></div></div><a href="https://registry.opendata.aws/indian-supreme-court-judgments/" target="_blank" rel="noreferrer">Open AWS registry record <svg><use href="#i-external" /></svg></a></article>
-            <article class="ledger-card"><span class="panel-kicker">THIS PROTOTYPE</span><h2>9 verified sample records</h2><p>Only the records visible in search are loaded here. All corpus-scale statistics are intentionally disabled until the full ingestion and QA pipeline runs.</p><div class="quality-meter"><span><i style="width:100%"></i></span><div><strong>100%</strong><small>sample metadata reviewed</small></div></div></article>
+            <article class="ledger-card schema-summary-card"><span class="panel-kicker">LIVE EXTRACTOR CONNECTION</span><h2><span id="extractorColumnTotal">51</span> selectable fields</h2><p id="schemaConnection">Connecting to the extractor schema…</p><div class="schema-metrics"><div><strong id="sourceColumnCount">18</strong><span>source</span></div><div><strong id="derivedColumnCount">16</strong><span>derived</span></div><div><strong id="analysisColumnCount">17</strong><span>analysis-ready</span></div></div><a class="schema-primary-link" href="https://nyayadesk-supreme-court-extractor.vercel.app" target="_blank" rel="noreferrer">Build an export <svg><use href="#i-external" /></svg></a></article>
+            <article class="ledger-card full-span schema-ledger"><div class="card-heading"><div><span class="panel-kicker">EXTRACTOR COLUMN MAP</span><h2>Choose a field group, then continue in the extractor</h2></div><a class="text-link" href="https://nyayadesk-supreme-court-extractor.vercel.app/api/schema" target="_blank" rel="noreferrer">View schema JSON →</a></div><div class="extractor-schema-groups" id="extractorSchemaGroups" aria-live="polite"><div class="schema-loading"><span></span><strong>Loading extractor columns…</strong></div></div></article>
             <article class="ledger-card"><span class="panel-kicker">VALIDATION GATES</span><h2>Five checks before an answer ships</h2><ol class="gate-list"><li><span>1</span>Resolve case identity</li><li><span>2</span>Match the source PDF</li><li><span>3</span>Link proposition to text</li><li><span>4</span>Check later treatment</li><li><span>5</span>Expose confidence and gaps</li></ol></article>
-            <article class="ledger-card full-span"><span class="panel-kicker">INGESTION PLAN</span><h2>From public files to trustworthy research</h2><div class="pipeline"><div class="done"><span>01</span><strong>Acquire</strong><small>Parquet + PDF archive</small></div><i></i><div><span>02</span><strong>Normalize</strong><small>Names, dates, citations</small></div><i></i><div><span>03</span><strong>Structure</strong><small>Paragraphs + roles</small></div><i></i><div><span>04</span><strong>Resolve</strong><small>Citation graph</small></div><i></i><div><span>05</span><strong>Review</strong><small>Human QA queues</small></div><i></i><div><span>06</span><strong>Index</strong><small>Search + retrieval</small></div></div></article>
+            <article class="ledger-card full-span"><span class="panel-kicker">INGESTION WORKFLOW</span><h2>From public files to trustworthy research</h2><div class="pipeline"><div class="done"><span>01</span><strong>Acquire</strong><small>Parquet + PDF archive</small></div><i></i><div><span>02</span><strong>Normalize</strong><small>Names, dates, citations</small></div><i></i><div><span>03</span><strong>Structure</strong><small>Paragraphs + roles</small></div><i></i><div><span>04</span><strong>Resolve</strong><small>Citation graph</small></div><i></i><div><span>05</span><strong>Review</strong><small>Human QA queues</small></div><i></i><div><span>06</span><strong>Index</strong><small>Search + retrieval</small></div></div></article>
           </div>
         </section>
       </main>

@@ -11,7 +11,7 @@ Audited on 10 November 2026 after consolidating the research interface and data 
 | `app.js` | Curated case records, research-answer rendering, filters, analytics, reader behaviour and workspace interactions |
 | `vercel.json` | Root static deployment configuration |
 
-The research prototype is written in plain HTML, CSS and JavaScript. There is no missing React, TypeScript or compiled component tree behind these files.
+The research application is written in plain HTML, CSS and JavaScript. There is no missing React, TypeScript or compiled component tree behind these files.
 
 ## Extraction tool
 

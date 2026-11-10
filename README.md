@@ -6,9 +6,9 @@ Complete source repository for the NyayaDesk Supreme Court research interface an
 - **Extraction tool:** [nyayadesk-supreme-court-extractor.vercel.app](https://nyayadesk-supreme-court-extractor.vercel.app/)
 - **Source dataset:** [`vanga/indian-supreme-court-judgments`](https://github.com/vanga/indian-supreme-court-judgments)
 
-## Current prototype
+## Current application
 
-The prototype includes:
+The application includes:
 
 - Evidence-linked legal research memos
 - Supreme Court case search and filters
@@ -17,7 +17,7 @@ The prototype includes:
 - Matter workspaces and alerts
 - Explicit verification and scope warnings
 
-The current interface uses a small, curated sample corpus. It does not claim production-wide coverage or provide legal advice. Authorities should be checked against official judgments before filing.
+The research interface uses a curated, reviewed set of landmark cases and links to the corpus-scale extractor schema. It does not provide legal advice. Authorities should be checked against official judgments before filing.
 
 ## Repository contents
 
@@ -25,7 +25,7 @@ The current interface uses a small, curated sample corpus. It does not claim pro
 
 - `index.html` — application shell and all research views
 - `styles.css` — responsive visual system
-- `app.js` — curated sample corpus and interface behaviour
+- `app.js` — curated research records, live extractor-schema connection and interface behaviour
 - `vercel.json` — research-app deployment configuration
 
 ### Supreme Court data extractor

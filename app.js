@@ -1,3 +1,33 @@
+const EXTRACTOR_BASE_URL = "https://nyayadesk-supreme-court-extractor.vercel.app";
+
+const FALLBACK_SOURCE_COLUMNS = [
+  "title", "petitioner", "respondent", "description", "judge", "author_judge", "citation", "case_id", "cnr",
+  "decision_date", "disposal_nature", "court", "available_languages", "raw_html", "path", "nc_display", "scraped_at", "year"
+];
+const FALLBACK_DERIVED_COLUMNS = [
+  "record_id", "source_pdf_url", "source_metadata_url", "source_dataset", "source_repository", "source_license", "extracted_at",
+  "source_headnote", "judges_normalized", "author_judge_normalized", "bench_strength", "judgment_text", "paragraph_count",
+  "word_count", "text_sha256", "text_extraction_method"
+];
+const FALLBACK_ANALYSIS_COLUMNS = [
+  "ai_headnote", "facts", "issues", "reasoning", "holding", "ratio", "final_order", "statutes_cited", "cases_cited",
+  "citation_treatment", "keywords", "verification_status", "reviewer_status", "analysis_status", "ai_model", "prompt_version", "extraction_error"
+];
+const EXTRACTOR_SCHEMA_FALLBACK = {
+  source_columns: FALLBACK_SOURCE_COLUMNS,
+  derived_columns: FALLBACK_DERIVED_COLUMNS,
+  analysis_columns: FALLBACK_ANALYSIS_COLUMNS,
+  all_columns: [...FALLBACK_SOURCE_COLUMNS, ...FALLBACK_DERIVED_COLUMNS, ...FALLBACK_ANALYSIS_COLUMNS],
+  groups: [
+    { id: "identity", label: "Case identity", description: "Names, citations and stable identifiers from source metadata.", columns: ["record_id", "title", "petitioner", "respondent", "citation", "case_id", "cnr", "nc_display"] },
+    { id: "court", label: "Court and decision", description: "Decision date, court, disposal and language information.", columns: ["court", "decision_date", "year", "disposal_nature", "available_languages"] },
+    { id: "judges", label: "Judges and bench", description: "Original and normalized judge fields for analytics.", columns: ["judge", "author_judge", "judges_normalized", "author_judge_normalized", "bench_strength"] },
+    { id: "source", label: "Source and provenance", description: "Raw source fields, URLs, licence and extraction timestamp.", columns: ["description", "raw_html", "path", "scraped_at", "source_pdf_url", "source_metadata_url", "source_dataset", "source_repository", "source_license", "extracted_at"] },
+    { id: "text", label: "Judgment text", description: "Optional PDF text and measurable text properties.", columns: ["source_headnote", "judgment_text", "paragraph_count", "word_count", "text_sha256", "text_extraction_method"] },
+    { id: "analysis", label: "Analysis-ready columns", description: "Blank until a separate verified enrichment pipeline runs.", columns: FALLBACK_ANALYSIS_COLUMNS }
+  ]
+};
+
 const cases = [
   {
     id: "kesavananda",
@@ -210,7 +240,7 @@ const researchAnswers = {
       ["Name the asserted basic feature", "Link it to authority recognising that feature, rather than relying on abstraction."],
       ["Show damage or destruction", "Explain how the amendment changes the constitutional identity, not merely its operation."]
     ],
-    caution: "This prototype contains the founding authority but not a complete later-treatment graph. A production memo must retrieve subsequent basic-structure decisions before reaching a filing conclusion.",
+    caution: "The current reviewed set contains the founding authority but not a complete later-treatment graph. A filing memo must retrieve subsequent basic-structure decisions before reaching a conclusion.",
     sources: ["kesavananda", "maneka"],
     claims: 3
   },
@@ -250,8 +280,7 @@ const researchAnswers = {
 
 const matterData = [
   { title: "Digital rights challenge", description: "Privacy, proportionality and restrictions on online access.", authorities: 5, notes: 3, updated: "Today" },
-  { title: "Constitutional amendment research", description: "Basic structure doctrine and amendment limits.", authorities: 3, notes: 2, updated: "Yesterday" },
-  { title: "Untitled research matter", description: "Newly saved authorities will appear here.", authorities: 0, notes: 0, updated: "Just now" }
+  { title: "Constitutional amendment research", description: "Basic structure doctrine and amendment limits.", authorities: 3, notes: 2, updated: "Yesterday" }
 ];
 
 const alertData = [
@@ -339,15 +368,15 @@ function renderAnswer(answer) {
 }
 
 function renderUnsupported(query) {
-  $("#answerTitle").textContent = "This proposition is not verified in the sample corpus";
-  $("#answerShort").innerHTML = `<strong>No supported answer returned.</strong> The prototype contains nine verified landmark records and none provides sufficient authority for “${escapeHtml(query)}”.`;
+  $("#answerTitle").textContent = "This proposition is not verified in the current research set";
+  $("#answerShort").innerHTML = `<strong>No supported answer returned.</strong> The current reviewed set contains nine landmark records and none provides sufficient authority for “${escapeHtml(query)}”.`;
   $("#answerReasoning").innerHTML = `<p>NyayaDesk has stopped rather than completing the answer from general model memory. In production, this query would expand retrieval across the complete Supreme Court index and would answer only after supporting text is resolved.</p>`;
   $("#answerSteps").innerHTML = `<li><div><strong>Broaden retrieval</strong><small>Search the full corpus by proposition, statute and related authority.</small></div></li><li><div><strong>Review candidate judgments</strong><small>Confirm the court, date, bench and source PDF.</small></div></li><li><div><strong>Link the answer</strong><small>Every material claim must point to supporting judgment text.</small></div></li>`;
-  $("#answerCaution").innerHTML = `${icon("i-alert")}<span><strong>Verification stopped</strong>No filing-ready conclusion should be drawn from this prototype result.</span>`;
+  $("#answerCaution").innerHTML = `${icon("i-alert")}<span><strong>Verification stopped</strong>No filing-ready conclusion should be drawn from this limited result.</span>`;
   $("#claimScore").textContent = "0/1";
   $("#answerTime").textContent = "Insufficient verified authority";
   $("#sourceCount").textContent = "0 sources";
-  $("#evidenceList").innerHTML = `<div class="empty-state">${icon("i-search")}<p>No supporting authority in the sample index.</p></div>`;
+  $("#evidenceList").innerHTML = `<div class="empty-state">${icon("i-search")}<p>No supporting authority in the current research set.</p></div>`;
   $("#evidencePercent").textContent = "0%";
   $("#evidenceProgress").style.width = "0%";
 }
@@ -377,7 +406,7 @@ function renderCases() {
       <p>${item.summary}</p>
       <div class="case-tags">${item.tags.map(tag => `<span>${tag}</span>`).join("")}</div>
     </div>
-    <div class="case-card-side"><span class="quality-badge">${icon("i-shield-check")} Verified sample</span><span class="case-open">Open judgment →</span></div>
+    <div class="case-card-side"><span class="quality-badge">${icon("i-shield-check")} Metadata verified</span><span class="case-open">Open judgment →</span></div>
   </article>`).join("") : `<div class="empty-state">${icon("i-search")}<h3>No matching case</h3><p>Try a broader case name, citation or legal issue.</p></div>`;
   bindDynamicActions();
 }
@@ -397,8 +426,8 @@ function renderReaderSection(section) {
     facts: `<h2>Background</h2><p>${item.background}</p><h3>Research caution</h3><p>This is a compact procedural and factual orientation, not a complete statement of the record.</p>`,
     issues: `<h2>Questions before the Court</h2><ul>${item.issues.map(issue => `<li>${issue}</li>`).join("")}</ul>`,
     holding: `<h2>Holding</h2><p>${item.holding}</p><div class="ratio-box"><span>RATIO CANDIDATE</span><p>${item.ratio}</p></div><p>The ratio label remains a candidate until proposition-level pinpoint review is completed.</p>`,
-    citations: `<h2>Authorities and later treatment</h2><div class="machine-banner">${icon("i-clock")}<span><strong>Not calculated in this prototype.</strong> A treatment label such as followed, distinguished or overruled will appear only when a later judgment’s operative text supports it.</span></div><p>Related records can be discovered by topic today, but the prototype does not represent those links as precedential treatment.</p>`,
-    source: `<h2>Source record</h2><div class="source-record"><div><span>Case title</span><strong>${item.title}</strong></div><div><span>Reported citation</span><strong>${item.citation}</strong></div><div><span>Decision date</span><strong>${item.date}</strong></div><div><span>Bench</span><strong>${item.judges}</strong></div><div><span>Author information</span><strong>${item.author}</strong></div><div><span>Prototype status</span><strong>Metadata reviewed</strong></div></div><h3>Production source chain</h3><p>Public dataset metadata → source PDF identity match → normalized case record → paragraph extraction → proposition review.</p>`
+    citations: `<h2>Authorities and later treatment</h2><div class="machine-banner">${icon("i-clock")}<span><strong>Not calculated for this reviewed set.</strong> A treatment label such as followed, distinguished or overruled will appear only when a later judgment’s operative text supports it.</span></div><p>Related records can be discovered by topic, but these links are not represented as precedential treatment without verification.</p>`,
+    source: `<h2>Source record</h2><div class="source-record"><div><span>Case title</span><strong>${item.title}</strong></div><div><span>Reported citation</span><strong>${item.citation}</strong></div><div><span>Decision date</span><strong>${item.date}</strong></div><div><span>Bench</span><strong>${item.judges}</strong></div><div><span>Author information</span><strong>${item.author}</strong></div><div><span>Record status</span><strong>Metadata reviewed</strong></div></div><h3>Source chain</h3><p>Public dataset metadata → source PDF identity match → normalized case record → paragraph extraction → proposition review.</p>`
   };
   $("#readerContent").innerHTML = sections[section] || sections.headnote;
   $$("[data-reader-tab]").forEach(button => button.classList.toggle("active", button.dataset.readerTab === section));
@@ -414,7 +443,7 @@ function openCase(id) {
 function renderAnalytics() {
   const select = $("#judgeSelect");
   if (!select.options.length) {
-    select.innerHTML = `<option value="all">All sample records</option>${[...new Set(cases.map(c => c.author))].map(j => `<option>${j}</option>`).join("")}`;
+    select.innerHTML = `<option value="all">All reviewed records</option>${[...new Set(cases.map(c => c.author))].map(j => `<option>${j}</option>`).join("")}`;
   }
   const selected = select.value;
   const data = selected === "all" ? cases : cases.filter(c => c.author === selected);
@@ -423,9 +452,9 @@ function renderAnalytics() {
   const avgBench = data.length ? (data.reduce((sum, c) => sum + c.bench, 0) / data.length).toFixed(1) : "0";
   const constitutionBenches = data.filter(c => c.bench >= 5).length;
   $("#metricCards").innerHTML = [
-    ["Records in denominator", data.length, "Visible sample only"],
+    ["Records in denominator", data.length, "Current research set"],
     ["Constitution benches", constitutionBenches, "Five judges or more"],
-    ["Average bench strength", avgBench, "Computed from sample metadata"],
+    ["Average bench strength", avgBench, "Computed from reviewed metadata"],
     ["Metadata coverage", data.length ? "100%" : "—", "Selected fields reviewed"]
   ].map(([label, value, note]) => `<article class="metric-card"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join("");
   $("#chartDenominator").textContent = `n=${data.length}`;
@@ -458,14 +487,54 @@ function renderAlerts() {
 }
 
 function escapeHtml(value) {
-  return value.replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
+  return String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
+}
+
+function renderExtractorSchema(schema, connectionState) {
+  const groups = Array.isArray(schema.groups) && schema.groups.length ? schema.groups : EXTRACTOR_SCHEMA_FALLBACK.groups;
+  const allColumns = Array.isArray(schema.all_columns) && schema.all_columns.length
+    ? schema.all_columns
+    : [...new Set(groups.flatMap(group => group.columns || []))];
+  const sourceCount = schema.source_columns?.length || FALLBACK_SOURCE_COLUMNS.length;
+  const derivedCount = schema.derived_columns?.length || FALLBACK_DERIVED_COLUMNS.length;
+  const analysisCount = schema.analysis_columns?.length || FALLBACK_ANALYSIS_COLUMNS.length;
+  $("#extractorColumnTotal").textContent = allColumns.length;
+  $("#sourceColumnCount").textContent = sourceCount;
+  $("#derivedColumnCount").textContent = derivedCount;
+  $("#analysisColumnCount").textContent = analysisCount;
+  $("#corpusStatus").textContent = `${connectionState === "live" ? "Live" : "Verified"} schema · ${allColumns.length} extractor fields`;
+  $("#schemaConnection").innerHTML = connectionState === "live"
+    ? `<span class="schema-status live"><i></i>Connected to the production extractor schema</span>`
+    : `<span class="schema-status"><i></i>Showing the bundled verified schema; the live endpoint can be retried by reloading</span>`;
+  $("#extractorSchemaGroups").innerHTML = groups.map((group, index) => {
+    const columns = Array.isArray(group.columns) ? group.columns : [];
+    const linkedUrl = `${EXTRACTOR_BASE_URL}/?columns=${encodeURIComponent(columns.join(","))}`;
+    return `<article class="extractor-schema-group">
+      <header><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${escapeHtml(group.label)}</h3><p>${escapeHtml(group.description || "")}</p></div><strong>${columns.length}</strong></header>
+      <div class="schema-column-list">${columns.map(column => `<code>${escapeHtml(column)}</code>`).join("")}</div>
+      <a href="${linkedUrl}" target="_blank" rel="noreferrer">Use these ${columns.length} columns in the extractor <svg><use href="#i-external" /></svg></a>
+    </article>`;
+  }).join("");
+}
+
+async function loadExtractorSchema() {
+  renderExtractorSchema(EXTRACTOR_SCHEMA_FALLBACK, "bundled");
+  try {
+    const response = await fetch(`${EXTRACTOR_BASE_URL}/api/schema`, { mode: "cors", cache: "no-store" });
+    if (!response.ok) throw new Error(`Extractor schema returned ${response.status}`);
+    const schema = await response.json();
+    if (!Array.isArray(schema.all_columns) || !Array.isArray(schema.groups)) throw new Error("Extractor schema is incomplete");
+    renderExtractorSchema(schema, "live");
+  } catch (error) {
+    console.warn("Live extractor schema unavailable; using bundled schema.", error);
+  }
 }
 
 function exportNote() {
   const plainShort = $("#answerShort").textContent.trim();
   const reasoning = $("#answerReasoning").textContent.trim();
-  const sources = currentAnswer?.sources?.map(id => { const c = caseById(id); return `- ${c.title} — ${c.citation}`; }).join("\n") || "- No verified sources in sample corpus";
-  const content = `NYAYADESK RESEARCH NOTE\n\n${$("#answerTitle").textContent}\n\n${plainShort}\n\nREASONING\n${reasoning}\n\nAUTHORITIES\n${sources}\n\nPrototype note. Verify against the official judgment before filing.`;
+  const sources = currentAnswer?.sources?.map(id => { const c = caseById(id); return `- ${c.title} — ${c.citation}`; }).join("\n") || "- No verified sources in the current research set";
+  const content = `NYAYADESK RESEARCH NOTE\n\n${$("#answerTitle").textContent}\n\n${plainShort}\n\nREASONING\n${reasoning}\n\nAUTHORITIES\n${sources}\n\nVerify against the official judgment before filing.`;
   const blob = new Blob([content], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -505,7 +574,7 @@ function initialize() {
     if (answer) renderAnswer(answer); else renderUnsupported(query);
     $("#answerCard").scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  $("#methodButton").addEventListener("click", () => modal("Verification method", `<p>NyayaDesk treats generation as the final formatting step—not the source of legal authority.</p><ol><li>Retrieve candidate judgments from the selected court and date scope.</li><li>Resolve the case identity against source metadata and the court PDF.</li><li>Link each material proposition to supporting judgment text.</li><li>Check how later courts treated the authority.</li><li>Block unsupported claims and show unresolved gaps.</li></ol><p><strong>Prototype limitation:</strong> this version uses nine reviewed records. Paragraph pinpoints and later-treatment labels remain disabled until the production pipeline can support them.</p>`));
+  $("#methodButton").addEventListener("click", () => modal("Verification method", `<p>NyayaDesk treats generation as the final formatting step—not the source of legal authority.</p><ol><li>Retrieve candidate judgments from the selected court and date scope.</li><li>Resolve the case identity against source metadata and the court PDF.</li><li>Link each material proposition to supporting judgment text.</li><li>Check how later courts treated the authority.</li><li>Block unsupported claims and show unresolved gaps.</li></ol><p><strong>Current coverage:</strong> the research interface contains nine reviewed records, while the linked extractor exposes the full source schema. Paragraph pinpoints and later-treatment labels remain disabled until the evidence pipeline can support them.</p>`));
   $("#analyticsMethod").addEventListener("click", () => modal("Judge Lens methodology", `<p>All numbers are descriptive counts from the selected corpus. The denominator is always displayed.</p><ul><li>Bench participation and authorship come from normalized metadata.</li><li>Subject labels need a documented taxonomy and quality review.</li><li>Treatment labels require supporting language in a later judgment.</li><li>No outcome prediction, ideology score or judge ranking is produced.</li></ul>` , { icon: "i-chart" }));
   $("#researchInput").addEventListener("keydown", event => {
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") $("#researchForm").requestSubmit();
@@ -514,7 +583,7 @@ function initialize() {
   $("#fileInput").addEventListener("change", event => {
     const file = event.target.files[0];
     if (!file) return;
-    modal("Document staged locally", `<p><strong>${escapeHtml(file.name)}</strong> has been selected for analysis.</p><p>This static prototype does not upload the file. In production, documents should be encrypted, isolated by matter, excluded from model training and deleted under the workspace retention policy.</p>`, { icon: "i-paperclip" });
+    modal("Document staged locally", `<p><strong>${escapeHtml(file.name)}</strong> has been selected for analysis.</p><p>This browser-only interface does not upload the file. A connected document workflow should encrypt it, isolate it by matter, exclude it from model training and delete it under the workspace retention policy.</p>`, { icon: "i-paperclip" });
   });
   $("#copyAnswer").addEventListener("click", async () => {
     const text = `${$("#answerTitle").textContent}\n\n${$("#answerShort").textContent.trim()}\n\n${$("#answerReasoning").textContent.trim()}`;
@@ -558,6 +627,7 @@ function initialize() {
   renderAnalytics();
   renderMatters();
   renderAlerts();
+  loadExtractorSchema();
   const requested = location.hash.replace("#", "");
   if (["research", "cases", "reader", "analytics", "matters", "alerts", "data"].includes(requested)) navigate(requested);
 }
